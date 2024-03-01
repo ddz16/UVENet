@@ -1,0 +1,110 @@
+# general settings
+name: 1_UVENet_SUVE
+model_type: UVENetModel
+scale: 1
+num_gpu: 4  # set num_gpu: 0 for cpu mode
+manual_seed: 10
+
+# dataset and data loader settings
+datasets:
+  train:
+    name: SUVE
+    type: SUVEDataset
+    dataroot_gt: datasets/SUVE/GT
+    dataroot_lq: datasets/SUVE/UW
+    dataroot_flow: ~
+    meta_info_file: basicsr/data/meta_info/meta_info_SUVE_train.txt
+    io_backend:
+      type: disk
+
+    num_frame: 5
+    gt_size: 256
+    interval_list: [1]
+    random_reverse: false
+    use_hflip: true
+    use_rot: true
+
+    # data loader
+    num_worker_per_gpu: 4
+    batch_size_per_gpu: 16
+    dataset_enlarge_ratio: 100
+    prefetch_mode: ~
+
+  val:
+    name: SUVE
+    type: SUVETestDataset
+    dataroot_gt: datasets/SUVE/GT
+    dataroot_lq: datasets/SUVE/UW
+    meta_info_file: basicsr/data/meta_info/meta_info_SUVE_test.txt
+    io_backend:
+      type: disk
+
+    cache_data: false
+    num_frame: 5
+    padding: replicate
+
+# network structures
+network_g:
+  type: UVENet
+  num_frame: 5
+  drop_path_rate: 0
+  layer_scale_init_value: !!float 1e-6
+  out_indices: [0, 1, 2, 3]
+
+# path
+path:
+  pretrain_network_g: ~
+  strict_load_g: false
+  resume_state: ~
+
+# training settings
+train:
+  # ema_decay: 0.999
+  optim_g:
+    type: Adam
+    lr: !!float 4e-4
+    weight_decay: 0
+    betas: [0.9, 0.99]
+
+  scheduler:
+    type: CosineAnnealingRestartLR
+    periods: [80000]
+    restart_weights: [1]
+    eta_min: !!float 1e-7
+
+  total_iter: 80000
+  warmup_iter: -1  # no warm up
+
+  # losses
+  pixel_opt:
+    type: L1Loss
+    loss_weight: 1.0
+    reduction: mean
+
+# validation settings
+val:
+  val_freq: !!float 5e3
+  save_img: false
+
+  metrics:
+    psnr:
+      type: calculate_psnr
+      crop_border: 0
+      test_y_channel: false
+
+# logging settings
+logger:
+  print_freq: 100
+  save_checkpoint_freq: !!float 5e3
+  use_tb_logger: false
+  wandb:
+    project: ~
+    resume_id: ~
+
+# dist training settings
+dist_params:
+  backend: nccl
+  port: 29500
+
+find_unused_parameters: true
+
