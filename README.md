@@ -1,7 +1,5 @@
 # UVENet
- Pytorch implementation of UVENet. 
- 
- **Please note that to comply with the blind review guidelines, the links to datasets and pretrained models are empty. These links will be available if the paper is accepted.**
+ Pytorch implementation of [UVENet](https://arxiv.org/abs/2403.11506) (End-To-End Underwater Video Enhancement: Dataset and Model). 
 
 ## Environment
 
@@ -56,4 +54,15 @@ python inference/inference_uvenet_allvideos.py --input_path datasets/SUVE/UW_tes
 - **Inference on real videos of MVK**
 ```predict
 python inference/inference_uvenet_allvideos.py --input_path datasets/MVK --save_path results/UVENet/MVK --model_path xxx
+```
+
+## Citation
+
+```
+@article{uvenet,
+  title={End-To-End Underwater Video Enhancement: Dataset and Model},
+  author={Dazhao Du, Enhan Li, Lingyu Si, Fanjiang Xu, Jianwei Niu},
+  journal={arXiv preprint arXiv:2403.11506},
+  year={2024}
+}
 ```
