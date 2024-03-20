@@ -44,7 +44,7 @@ Model checkpoints and logs will be saved to the `./experiments` folder.
 
 ## Inference
 
-You can inference using either the model trained by yourself or the [pretrained model]() we provide. Please note that you need to change the `model_path` option in the commands below to the expected model path.
+You can inference using either the model trained by yourself or the [pretrained model](https://drive.google.com/file/d/1KjwKFVQmb3KPyDS9l8BMc18CHveGDhWa/view?usp=drive_link) we provide. Please note that you need to change the `model_path` option in the commands below to the expected model path.
 
 - **Inference on test videos of SUVE**
 ```
